@@ -1,57 +1,17 @@
-const express = require('express');
+// routes/index.js
+import express from 'express';
+
 const router = express.Router();
-const uuid = require('uuid');
-let upload = require('./upload');
-const url = require('url')
-let Image = require('../models/images');
 
+// Home route
+router.get('/', (req, res) => {
+  res.send('Welcome to the Dark Room Gallery!');
+});
 
-var db = []
-
-router.get('/', async (req, res) => {
-  try {
-    const images = await Image.find({});
-    res.render('index', { images });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error");
-  }
+// Example additional routes
+router.get('/about', (req, res) => {
+  res.send('This is a gallery application built with Node.js, Express, and MongoDB.');
 });
 
 
-router.post('/upload', (req, res)=>{
-    upload(req,res, (err)=>{
-        if (err){
-            res.redirect(`/?msg=${err}`);
-        }else{
-            console.log(req.file);
-            // res.send("test");
-            if (req.file == undefined){
-                res.redirect('/?msg=Error: No file selcted!');
-            }else{
-                // const imageObj = {
-                //     id: uuid.v4(),
-                //     name: req.file.filename,
-                //     path: 'images/' + req.file.filename
-                // }
-                // db.push(imageObj);
-                // console.log(db);
-
-                // create new image
-                let newImage = new Image({
-                    name: req.file.filename,
-                    size: req.file.size,
-                    path: 'images/' + req.file.filename
-                })
-
-                // save the uploaded image to the database
-                newImage.save()
-
-                
-                res.redirect('/?msg=File uploaded successfully');
-            }
-        }
-    })
-})
-
-module.exports = router;
+export default router;

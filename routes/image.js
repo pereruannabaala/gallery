@@ -1,34 +1,14 @@
-const express = require('express');
+// routes/image.js
+import express from 'express';
+
 const router = express.Router();
-let Image = require('../models/images');
 
-router.get('/:id', (req,res)=>{
-    // console.log(req);
-    Image.findById(req.params.id,function(err, image){
-        if (err) console.log(err)
-        // console.log(image);
-        res.render('singleImage', {title: 'Single Image', image:image})
-    } )
-})
+// Example route for listing images
+router.get('/', (req, res) => {
+  res.send('Image route works!');
+});
 
-router.put('/:id', (req,res) =>{
-    console.log(req.params.id)
-    console.log(req.body);
-    Image.findOneAndUpdate({_id:req.params.id},{
-        name:req.body.name
-    },{new: true}, function(err,image ){
-        if (err) console.log(err)
-        res.redirect('/')
-    })
-})
+// Add more image-related routes here as needed
+// e.g., router.post('/upload', ...)
 
-router.delete('/:id', (req,res) =>{
-    console.log(req.params.id)
-
-    Image.deleteOne({_id: req.params.id}, function(err){
-        if (err) console.log(err)
-        res.redirect('/index')
-    })
-})
-
-module.exports = router
+export default router;

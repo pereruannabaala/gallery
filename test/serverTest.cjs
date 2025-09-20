@@ -1,9 +1,6 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const app = require('../server.js');
+const app = require('../server');
 
 const { expect } = chai;
 chai.use(chaiHttp);
@@ -21,3 +18,4 @@ describe('Photos', function () {
       });
   });
 });
+
