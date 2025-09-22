@@ -1,13 +1,12 @@
-const express = require('express');
+// routes/index.js
+import express from 'express';
+import { v4 as uuidv4 } from 'uuid';
+import upload from './upload.js';  // make sure upload.js is also ESM
+import Image from '../models/images.js'; // ensure images.js model is ESM
+
 const router = express.Router();
-const uuid = require('uuid');
-let upload = require('./upload');
-const url = require('url')
-let Image = require('../models/images');
 
-
-var db = []
-
+// GET all images
 router.get('/', async (req, res) => {
   try {
     const images = await Image.find({});
@@ -18,40 +17,34 @@ router.get('/', async (req, res) => {
   }
 });
 
+// POST upload image
+router.post('/upload', (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      res.redirect(`/?msg=${err}`);
+    } else {
+      console.log(req.file);
+      if (!req.file) {
+        res.redirect('/?msg=Error: No file selected!');
+      } else {
+        // create new image
+        const newImage = new Image({
+          name: req.file.filename,
+          size: req.file.size,
+          path: 'images/' + req.file.filename,
+        });
 
-router.post('/upload', (req, res)=>{
-    upload(req,res, (err)=>{
-        if (err){
-            res.redirect(`/?msg=${err}`);
-        }else{
-            console.log(req.file);
-            // res.send("test");
-            if (req.file == undefined){
-                res.redirect('/?msg=Error: No file selcted!');
-            }else{
-                // const imageObj = {
-                //     id: uuid.v4(),
-                //     name: req.file.filename,
-                //     path: 'images/' + req.file.filename
-                // }
-                // db.push(imageObj);
-                // console.log(db);
-
-                // create new image
-                let newImage = new Image({
-                    name: req.file.filename,
-                    size: req.file.size,
-                    path: 'images/' + req.file.filename
-                })
-
-                // save the uploaded image to the database
-                newImage.save()
-
-                
-                res.redirect('/?msg=File uploaded successfully');
-            }
+        // save the uploaded image to the database
+        try {
+          await newImage.save();
+          res.redirect('/?msg=File uploaded successfully');
+        } catch (saveErr) {
+          console.error(saveErr);
+          res.redirect('/?msg=Error saving file!');
         }
-    })
-})
+      }
+    }
+  });
+});
 
-module.exports = router;
+export default router;

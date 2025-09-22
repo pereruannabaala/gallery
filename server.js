@@ -1,10 +1,14 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const path = require('path');
+// server.js
+import express from 'express';
+import mongoose from 'mongoose';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import index from './routes/index.js';
+import image from './routes/image.js';
 
-// Define routes
-const index = require('./routes/index');
-const image = require('./routes/image');
+// Fix __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Initialize the app
 const app = express();
@@ -42,3 +46,6 @@ async function startServer(port = 5000) {
 }
 
 startServer();
+
+// Export app for testing
+export default app;
