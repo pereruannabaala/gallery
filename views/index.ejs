@@ -54,7 +54,7 @@
         <% images.forEach(function(image){ %>
           <div class="column">
             <a href="/image/<%= image._id %>">
-              <img src="<%= image.path %>" class="responsive-img" alt="<%= image.name %>">
+              <img src="/uploads/<%= image.filename %>" alt="<%= image.name %>" class="responsive-img">
             </a>
           </div>
         <% }); %>  

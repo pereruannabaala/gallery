@@ -15,6 +15,9 @@ app.set('view engine', 'ejs');
 // Set up the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 👉 Add this line to expose your uploads folder
+app.use('/uploads', express.static(path.join(__dirname, 'routes/uploads')));
+
 // Body parser middleware
 app.use(express.json());
 
