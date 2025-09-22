@@ -8,11 +8,11 @@ Live demo: [gallery-1-1970.onrender.com](https://gallery-1-1970.onrender.com)
 
 ## 🚀 Features
 
-- 🖼️ Display image galleries using EJS templates
-- 📁 Organized folder structure for models, routes, views, and public assets
-- 🔐 Basic security and routing setup
-- ✅ Includes test suite for backend functionality
-- ⚙️ Jenkinsfile for CI/CD pipeline integration
+- Display image galleries using EJS templates
+- Organized folder structure for models, routes, views, and public assets
+- Basic security and routing setup
+- Includes test suite for backend functionality
+- Jenkinsfile for CI/CD pipeline integration
 
 ---
 
@@ -51,12 +51,12 @@ npm test
 
 This project includes a CI/CD pipeline that sends a Slack message to the `#pereruan_ip1` channel upon successful deployment.
 
-### ✅ What the Message Includes
+### What the Message Includes
 
 - 🔢 **Build ID** of the deployment
 - 🌐 **Live site link** hosted on [Render](https://render.com)
 
-### ⚙️ How It Works
+### How It Works
 
 The pipeline uses environment variables to securely pass:
 
