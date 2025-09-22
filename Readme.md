@@ -66,3 +66,67 @@ The pipeline uses environment variables to securely pass:
 
 When a deployment completes successfully, a message is posted to Slack with a summary like:
 
+---
+
+## 🧪 CI Pipeline: Test Execution & Failure Alerts
+
+As part of the CI/CD workflow, the `test` branch has been merged into `main`, and the Jenkins pipeline has been updated to automatically run tests during each build.
+
+### 🔍 What Happens
+
+- ✅ On every push to `main`, the pipeline executes the test suite located in the `/test` directory.
+- ❌ If any test fails, an email notification is triggered to alert the development team.
+
+### 📬 Email Notification Setup
+
+The Jenkinsfile includes logic to:
+
+- Detect test failures
+- Send an email with:
+  - The build ID
+  - A summary of the failed tests
+  - A link to the Jenkins build logs
+
+> Make sure your Jenkins environment is configured with:
+> - Valid SMTP credentials
+> - `EMAIL_RECIPIENTS` environment variable set to the appropriate team email
+
+This setup ensures that test failures are caught early and communicated promptly, keeping the deployment pipeline reliable and transparent.
+
+---
+
+---
+
+## 🧪 CI Pipeline: Test Execution & Failure Alerts
+
+The Jenkins pipeline has been updated to automatically run tests after merging the `test` branch into `main`. If any test fails during the build process, an email notification is sent to the configured recipient.
+
+### ❌ Example Failure Notification
+
+Subject: Jenkins Pipeline Failed: gallery-pipeline #3 
+From: pereruannabaala@gmail.com
+
+The pipeline for job 'gallery-pipeline [3]' has failed.
+
+Check the console output at http://localhost:8080/job/gallery-pipeline/3/ to see what went wrong.
+
+
+### 📬 Email Notification Setup
+
+The Jenkinsfile includes logic to:
+
+- Run the test suite on each build
+- Detect failures and trigger an email alert
+- Include the job name and direct link to the Jenkins console output
+
+> Make sure your Jenkins environment is configured with:
+> - Valid SMTP settings
+> - `EMAIL_RECIPIENTS` environment variable set to your email address
+
+This ensures that any issues in the codebase are caught early and communicated immediately to the developer.
+
+---
+
+# Author
+- Pereruan Nabaala
+- pereruannabaala@gmail.comm
