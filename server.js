@@ -1,29 +1,26 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path');
 
-// ESM __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Define routes
+const index = require('./routes/index');
+const image = require('./routes/image');
 
-import indexRouter from './routes/index.js';
-import imageRouter from './routes/image.js';
-
+// Initialize the app
 const app = express();
 
 // View Engine
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
-// Public folder
+// Set up the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Body parser
 app.use(express.json());
 
 // Routes
-app.use('/', indexRouter);
-app.use('/image', imageRouter);
+app.use('/', index);
+app.use('/image', image);
 
 // Database & Server
 async function startServer(port = 5000) {
@@ -44,9 +41,4 @@ async function startServer(port = 5000) {
   }
 }
 
-// Start server only if not in test
-if (process.env.NODE_ENV !== 'test') {
-  startServer();
-}
-
-export default app; // export for tests
+startServer();

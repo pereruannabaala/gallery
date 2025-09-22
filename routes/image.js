@@ -1,45 +1,34 @@
-import express from 'express';
-import Image from '../models/images.js';  // add .js extension for ESM
-
+const express = require('express');
 const router = express.Router();
+let Image = require('../models/images');
 
-// GET single image by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const image = await Image.findById(req.params.id);
-    if (!image) return res.status(404).send('Image not found');
-    res.render('singleImage', { title: 'Single Image', image });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server error');
-  }
-});
+router.get('/:id', (req,res)=>{
+    // console.log(req);
+    Image.findById(req.params.id,function(err, image){
+        if (err) console.log(err)
+        // console.log(image);
+        res.render('singleImage', {title: 'Single Image', image:image})
+    } )
+})
 
-// PUT update image by ID
-router.put('/:id', async (req, res) => {
-  try {
-    const updatedImage = await Image.findOneAndUpdate(
-      { _id: req.params.id },
-      { name: req.body.name },
-      { new: true }
-    );
-    if (!updatedImage) return res.status(404).send('Image not found');
-    res.redirect('/');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server error');
-  }
-});
+router.put('/:id', (req,res) =>{
+    console.log(req.params.id)
+    console.log(req.body);
+    Image.findOneAndUpdate({_id:req.params.id},{
+        name:req.body.name
+    },{new: true}, function(err,image ){
+        if (err) console.log(err)
+        res.redirect('/')
+    })
+})
 
-// DELETE image by ID
-router.delete('/:id', async (req, res) => {
-  try {
-    await Image.deleteOne({ _id: req.params.id });
-    res.redirect('/');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server error');
-  }
-});
+router.delete('/:id', (req,res) =>{
+    console.log(req.params.id)
 
-export default router;
+    Image.deleteOne({_id: req.params.id}, function(err){
+        if (err) console.log(err)
+        res.redirect('/index')
+    })
+})
+
+module.exports = router

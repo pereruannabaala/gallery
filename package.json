@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "mocha --recursive 'test/**/*.js'",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node server.js"
   },
   "keywords": [],
@@ -19,10 +19,5 @@
     "mongoose": "^8.0.0",
     "multer": "^2.0.2",
     "uuid": "^8.1.0"
-  },
-  "devDependencies": {
-    "chai": "^5.3.3",
-    "chai-http": "^5.0.0",
-    "mocha": "^11.7.2"
   }
 }

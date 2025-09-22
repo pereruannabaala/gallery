@@ -1,40 +1,57 @@
-import express from 'express';
-import { v4 as uuidv4 } from 'uuid';
-import upload from './upload.js';
-import Image from '../models/images.js';
-
+const express = require('express');
 const router = express.Router();
+const uuid = require('uuid');
+let upload = require('./upload');
+const url = require('url')
+let Image = require('../models/images');
 
-// GET /
+
+var db = []
+
 router.get('/', async (req, res) => {
   try {
     const images = await Image.find({});
-    res.render('index', { images, msg: req.query.msg || null });
+    res.render('index', { images });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
   }
 });
 
-// POST /upload
-router.post('/upload', (req, res) => {
-  upload(req, res, async (err) => {
-    if (err) return res.redirect(`/?msg=${err}`);
-    if (!req.file) return res.redirect('/?msg=Error: No file selected!');
 
-    try {
-      const newImage = new Image({
-        name: req.file.filename,
-        size: req.file.size,
-        path: 'images/' + req.file.filename,
-      });
-      await newImage.save();
-      res.redirect('/?msg=File uploaded successfully');
-    } catch (saveErr) {
-      console.error(saveErr);
-      res.redirect('/?msg=Error saving file to database!');
-    }
-  });
-});
+router.post('/upload', (req, res)=>{
+    upload(req,res, (err)=>{
+        if (err){
+            res.redirect(`/?msg=${err}`);
+        }else{
+            console.log(req.file);
+            // res.send("test");
+            if (req.file == undefined){
+                res.redirect('/?msg=Error: No file selcted!');
+            }else{
+                // const imageObj = {
+                //     id: uuid.v4(),
+                //     name: req.file.filename,
+                //     path: 'images/' + req.file.filename
+                // }
+                // db.push(imageObj);
+                // console.log(db);
 
-export default router;
+                // create new image
+                let newImage = new Image({
+                    name: req.file.filename,
+                    size: req.file.size,
+                    path: 'images/' + req.file.filename
+                })
+
+                // save the uploaded image to the database
+                newImage.save()
+
+                
+                res.redirect('/?msg=File uploaded successfully');
+            }
+        }
+    })
+})
+
+module.exports = router;
