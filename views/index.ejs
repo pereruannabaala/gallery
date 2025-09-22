@@ -54,11 +54,17 @@
         <% images.forEach(function(image){ %>
           <div class="column">
             <a href="/image/<%= image._id %>">
-              <img src="/uploads/<%= image.filename %>" alt="<%= image.name %>" class="responsive-img">
+              <img src="<%= image.path %>" class="responsive-img" alt="<%= image.name %>">
             </a>
           </div>
         <% }); %>  
       </div>
+  </div>
+
+    <div style="background-color: black; text-align:center; padding:20px; margin-bottom:20px;">
+      <h1 style="font-size:4rem; font-weight:bold; color:white;">
+          MILESTONE 3
+      </h1>
   </div>
     
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
