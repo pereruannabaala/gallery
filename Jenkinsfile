@@ -40,7 +40,7 @@ pipeline {
             slackSend (
                 channel: '#pereruan_ip1',
                 color: 'good',
-                message: "✅ SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' deployed successfully.\nCheck logs: ${env.BUILD_URL}\nRender: <YOUR_RENDER_LINK_HERE>"
+                message: "✅ SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' deployed successfully.\nCheck logs: ${env.BUILD_URL}\nRender: https://gallery-1-1970.onrender.com/"
             )
         }
         failure {
@@ -60,4 +60,3 @@ Check the console output at ${env.BUILD_URL} to see what went wrong.
         }
     }
 }
-
