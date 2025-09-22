@@ -1,43 +1,52 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const path = require('path');
+import express from 'express';
+import mongoose from 'mongoose';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// Define routes
-const index = require('./routes/index');
-const image = require('./routes/image');
+// ESM __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Initialize the app
+import indexRouter from './routes/index.js';
+import imageRouter from './routes/image.js';
+
 const app = express();
 
 // View Engine
 app.set('view engine', 'ejs');
 
-// Set up the public folder
+// Public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Body parser middleware
+// Body parser
 app.use(express.json());
 
 // Routes
-app.use('/', index);
-app.use('/image', image);
+app.use('/', indexRouter);
+app.use('/image', imageRouter);
 
-// Connect to DB and start server
-async function startServer() {
+// Database & Server
+async function startServer(port = 5000) {
   try {
     await mongoose.connect(
       "mongodb+srv://pereruannabaala:Pn%400757364069@gallerycluster.nspe8xq.mongodb.net/darkroom?retryWrites=true&w=majority&appName=galleryCluster"
     );
     console.log("✅ Database connected successfully");
 
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-      console.log(`🚀 Server is listening at http://localhost:${PORT}`);
-    });
+    if (process.env.NODE_ENV !== 'test') {
+      app.listen(port, () => {
+        console.log(`🚀 Server listening on http://localhost:${port}`);
+      });
+    }
   } catch (err) {
     console.error("❌ MongoDB connection error:", err);
     process.exit(1);
   }
 }
 
-startServer();
+// Start server only if not in test
+if (process.env.NODE_ENV !== 'test') {
+  startServer();
+}
+
+export default app; // export for tests

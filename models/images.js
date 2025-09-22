@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
 
-// create a schema for our database
-var imageSchema = new Schema({
-    name: String,
-    path: String,
-    size: Number,
-    date: {type: Date, default: Date() }
+const { Schema } = mongoose;
 
+// Create schema
+const imageSchema = new Schema({
+  name: String,
+  path: String,
+  size: Number,
+  date: { type: Date, default: Date.now }  // use Date.now to avoid fixed time at load
 });
 
-// convert the schema into a Model
-let Image = mongoose.model('Image', imageSchema);
+// Convert schema to Model
+const Image = mongoose.model('Image', imageSchema);
 
-module.exports = Image;
+export default Image;
