@@ -1,8 +1,10 @@
 pipeline {
     agent any
+
     tools {
         nodejs "Node18"
     }
+
     stages {
         stage('Clone Repo') {
             steps {
@@ -18,13 +20,8 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'npm test'
-            }
-        }
-
-        stage('Run Dev') {
-            steps {
-                sh 'npm start & sleep 10 && fuser -k 5000/tcp || true'
+                // Run tests in NODE_ENV=test to skip long-lived server
+                sh 'NODE_ENV=test npm test'
             }
         }
 
@@ -40,8 +37,19 @@ pipeline {
     post {
         success {
             echo '✅ Build and tests passed. Deployment triggered.'
+            slackSend (
+                channel: '#pereruan_ip1',
+                color: 'good',
+                message: "✅ SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' deployed successfully.\nCheck logs: ${env.BUILD_URL}\nRender: <YOUR_RENDER_LINK_HERE>"
+            )
         }
         failure {
+            echo '❌ Build failed.'
+            slackSend (
+                channel: '#pereruan_ip1',
+                color: 'danger',
+                message: "❌ FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'.\nCheck logs: ${env.BUILD_URL}"
+            )
             mail to: 'pereruannabaala@gmail.com',
                  subject: "❌ Jenkins Pipeline Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                  body: """\
@@ -52,3 +60,4 @@ Check the console output at ${env.BUILD_URL} to see what went wrong.
         }
     }
 }
+
