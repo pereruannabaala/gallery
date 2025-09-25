@@ -29,7 +29,7 @@ npm install
 # Start the server
 npm start
 ```
-Visit ``http://localhost:3000`` in your browser to view the app locally.
+Visit ``http://localhost:5000`` in your browser to view the app locally.
 
 # 🧪 Running Tests
 ```
